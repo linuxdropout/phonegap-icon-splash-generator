@@ -1,0 +1,26 @@
+{
+  "name": "phonegap-icon-splash-generator",
+  "version": "1.0.0",
+  "description": "generate phonegap icons for an ionic v1 cordova phonegap project",
+  "main": "phonegap-icon-splash-generator.js",
+  "scripts": {
+    "test": "node phonegap-icon-splash-generator.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylan0150/phonegap-icon-splash-generator.git"
+  },
+  "keywords": [
+    "ionic",
+    "cordova",
+    "phonegap",
+    "icon",
+    "splash"
+  ],
+  "author": "Dylan Hanner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylan0150/phonegap-icon-splash-generator/issues"
+  },
+  "homepage": "https://github.com/dylan0150/phonegap-icon-splash-generator#readme"
+}
