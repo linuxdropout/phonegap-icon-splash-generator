@@ -54,7 +54,7 @@ function createDefaultIcon() {
   let from = path+"/icon.png"
   let dest = "www/icon.png"
   processing++
-  xml += '<icon src="'+dest.replace('www/','')+'">\n'
+  xml += '<icon src="'+dest.replace('www/','')+'"></icon>\n'
   gm( from )
   .resize( 512, 512, "!" )
   .write( dest, function(err,data2,data2,command) {
@@ -67,7 +67,7 @@ function createDefaultSplash() {
   let from = path+"/icon.png"
   let dest = "www/splash.png"
   processing++
-  xml += '<splash src="'+dest.replace('www/','')+'">\n'
+  xml += '<splash src="'+dest.replace('www/','')+'"></splash>\n'
   let size = Math.floor(Math.min(512,1024) * 0.8)
   gm( from )
   .resize( size, size, "!" )
@@ -87,10 +87,10 @@ function createIcon( destination, size_data, platform ) {
   switch ( platform ) {
     case 'android':
       if ( size_data.qualifier != undefined ) {
-        xml += '<icon platform="android" qualifier="'+size_data.qualifier+'" src="'+dest.replace('www/','')+'">\n';
+        xml += '<icon platform="android" qualifier="'+size_data.qualifier+'" src="'+dest.replace('www/','')+'"></icon>\n';
         break;
       }
-    default: xml += '<icon platform="'+platform+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'">\n'; break;
+    default: xml += '<icon platform="'+platform+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'"></icon>\n'; break;
   }
   if ( size_data.width != size_data.height ) {
     let size = Math.floor(Math.min(size_data.width,size_data.height) * 0.8)
@@ -118,8 +118,8 @@ function createSplash( destination, size_data, platform ) {
   let dest = destination+"/"+size_data.name+".png"
   processing++
   switch ( platform ) {
-    case 'android' : xml += '<splash platform="'+platform+'" qualifier="'+size_data.qualifier+'" src="'+dest.replace('www/','')+'">\n'; break;
-    default        : xml += '<splash platform="'+platform+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'">\n';
+    case 'android' : xml += '<splash platform="'+platform+'" qualifier="'+size_data.qualifier+'" src="'+dest.replace('www/','')+'"></splash>\n'; break;
+    default        : xml += '<splash platform="'+platform+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'"></splash>\n';
   }
   let size = Math.floor(Math.min(size_data.width,size_data.height) * 0.8)
   gm( from )
