@@ -58,6 +58,7 @@ function createDefaultIcon() {
   gm( from )
   .resize( 512, 512, "!" )
   .write( dest, function(err,data2,data2,command) {
+    console.log(command)
     if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
   })
 }
@@ -74,6 +75,7 @@ function createDefaultSplash() {
   .background('#ffffff')
   .extent( 512, 1024 )
   .write( dest, function(err,data2,data2,command) {
+    console.log(command)
     if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
   })
 }
@@ -98,12 +100,14 @@ function createIcon( destination, size_data, platform ) {
     .background('#ffffff')
     .extent( size_data.width, size_data.height )
     .write( dest, function(err,data2,data2,command) {
+      console.log(command)
       if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
     })
   } else {
     gm( from )
     .resize( size_data.width, size_data.height, "!" )
     .write( dest, function(err,data2,data2,command) {
+      console.log(command)
       if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
     })
   }
@@ -124,6 +128,7 @@ function createSplash( destination, size_data, platform ) {
   .background('#ffffff')
   .extent( size_data.width, size_data.height )
   .write( dest, function(err,data2,data2,command) {
+    console.log(command)
     if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
   })
 }
