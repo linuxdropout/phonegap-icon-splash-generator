@@ -1,0 +1,129 @@
+{
+  "icon":{
+    "ios":{
+      "path":"www/res/ios/icons",
+      "sizes":[
+        { "name":"Icon-Small",          "width":29,   "height":29   },
+        { "name":"Icon-Small@2x",       "width":58,   "height":58   },
+        { "name":"Icon-Small@3x",       "width":87,   "height":87   },
+        { "name":"Icon-Small-40",       "width":40,   "height":40   },
+        { "name":"Icon-Small-40@2x",    "width":80,   "height":80   },
+        { "name":"Icon-Small-40@3x",    "width":120,  "height":120  },
+        { "name":"Icon-Small-50",       "width":50,   "height":50   },
+        { "name":"Icon-Small-50@2x",    "width":100,  "height":100  },
+        { "name":"Icon",                "width":57,   "height":57   },
+        { "name":"Icon@2x",             "width":114,  "height":114  },
+        { "name":"Icon-60@2x",          "width":120,  "height":120  },
+        { "name":"Icon-60@3x",          "width":180,  "height":180  },
+        { "name":"Icon-72",             "width":72,   "height":72   },
+        { "name":"Icon-72@2x",          "width":144,  "height":144  },
+        { "name":"Icon-76",             "width":76,   "height":76   },
+        { "name":"Icon-76@2x",          "width":152,  "height":152  },
+        { "name":"Icon-83.5@2x",        "width":167,  "height":167  },
+        { "name":"AppIcon24x24@2x",     "width":48,   "height":48   },
+        { "name":"AppIcon27.5x27.5@2x", "width":55,   "height":55   },
+        { "name":"AppIcon29x29@2x",     "width":58,   "height":58   },
+        { "name":"AppIcon40x40@2x",     "width":80,   "height":80   },
+        { "name":"AppIcon29x29@3x",     "width":87,   "height":87   },
+        { "name":"AppIcon44x44@2x",     "width":88,   "height":88   },
+        { "name":"AppIcon86x86@2x",     "width":172,  "height":172  },
+        { "name":"AppIcon98x98@2x",     "width":196,  "height":196  },
+        { "name":"ItunesArtwork",       "width":512,  "height":512  },
+        { "name":"ItunesArtwork@2x",    "width":1024, "height":1024 }
+      ]
+    },
+    "android":{
+      "path":"www/res/android/icons",
+      "sizes":[
+        { "name":"icon_ldpi",    "width":36,  "height":36,  "qualifier":"ldpi"    },
+        { "name":"icon_mdpi",    "width":48,  "height":48,  "qualifier":"mdpi"    },
+        { "name":"icon_hdpi",    "width":72,  "height":72,  "qualifier":"hdpi"    },
+        { "name":"icon_xhdpi",   "width":96,  "height":96,  "qualifier":"xhdpi"   },
+        { "name":"icon_xxhdpi",  "width":144, "height":144, "qualifier":"xxhdpi"  },
+        { "name":"icon_xxxhdpi", "width":192, "height":192, "qualifier":"xxxhdpi" }
+      ]
+    },
+    "windows":{
+      "path":"www/res/windows/icons",
+      "sizes":[
+        { "name":"Square30x30Logo.scale-100",    "width":30,  "height":30  },
+        { "name":"Square44x44Logo.scale-100",    "width":44,  "height":44  },
+        { "name":"Square44x44Logo.scale-240",    "width":106, "height":106 },
+        { "name":"Square70x70Logo.scale-100",    "width":70,  "height":70  },
+        { "name":"Square71x71Logo.scale-100",    "width":71,  "height":71  },
+        { "name":"Square71x71Logo.scale-240",    "width":170, "height":170 },
+        { "name":"Square150x150Logo.scale-100",  "width":150, "height":150 },
+        { "name":"Square300x300Logo.scale-100",  "width":300, "height":300 },
+        { "name":"Square150x150Logo.scale-240",  "width":360, "height":360 },
+        { "name":"Square310x310Logo.scale-100",  "width":310, "height":310 },
+        { "name":"Wide310x150Logo.scale-100",    "width":310, "height":150 },
+        { "name":"Wide310x150Logo.scale-240",    "width":744, "height":360 },
+        { "name":"StoreLogo50x50Logo.scale-100", "width":50,  "height":50  },
+        { "name":"StoreLogo50x50Logo.scale-240", "width":120, "height":120 }
+      ]
+    }
+  },
+  "store":{
+    "ios":{
+      "path":"resources/ios",
+      "sizes":[]
+    },
+    "android":{
+      "path":"resources/android",
+      "sizes":[
+        { "name":"Hi-res",          "width":512,  "height":512 },
+        { "name":"Feature Graphic", "width":1024, "height":500 },
+        { "name":"Promo Graphic",   "width":180,  "height":120 },
+        { "name":"TV Banner",       "width":1280, "height":720 }
+      ]
+    },
+    "windows":{
+      "path":"resources/windows",
+      "sizes":[
+        { "name":"Store", "width":300, "height":300 }
+      ]
+    }
+  },
+  "splash":{
+    "ios":{
+      "path":"www/res/ios/splash",
+      "sizes":[
+        { "name":"Default",                  "width":320,  "height":480  },
+        { "name":"Default@2x",               "width":640,  "height":960  },
+        { "name":"Default-568h@2x",          "width":640,  "height":1136 },
+        { "name":"Default-667h@2x",          "width":750,  "height":1334 },
+        { "name":"Default-Portrait",         "width":768,  "height":1024 },
+        { "name":"Default-Landscape",        "width":1024, "height":768  },
+        { "name":"Default-Portrait@2x",      "width":1536, "height":2048 },
+        { "name":"Default-Landscape@2x",     "width":2048, "height":1546 },
+        { "name":"Default-Portrait-736@3x",  "width":1242, "height":2208 },
+        { "name":"Default-Landscape-736@3x", "width":2208, "height":1242 }
+      ]
+    },
+    "android":{
+      "path":"www/res/android/splash",
+      "sizes":[
+        { "name":"splash_portrait_ldpi",     "width":200, "height":320,   "qualifier":"port-ldpi"    },
+        { "name":"splash_landscape_ldpi",    "width":320, "height":200,   "qualifier":"land-ldpi"    },
+        { "name":"splash_portrait_mdpi",     "width":320, "height":480,   "qualifier":"port-mdpi"    },
+        { "name":"splash_landscape_mdpi",    "width":480, "height":320,   "qualifier":"land-mdpi"    },
+        { "name":"splash_portrait_hdpi",     "width":480, "height":800,   "qualifier":"port-hdpi"    },
+        { "name":"splash_landscape_hdpi",    "width":800, "height":480,   "qualifier":"land-hdpi"    },
+        { "name":"splash_portrait_xhdpi",    "width":720, "height":1280,  "qualifier":"port-xhdpi"   },
+        { "name":"splash_landscape_xhdpi",   "width":1280, "height":720,  "qualifier":"land-xhdpi"   },
+        { "name":"splash_portrait_xxhdpi",   "width":960, "height":1600,  "qualifier":"port-xxhdpi"  },
+        { "name":"splash_landscape_xxhdpi",  "width":1600, "height":960,  "qualifier":"land-xxhdpi"  },
+        { "name":"splash_portrait_xxxhdpi",  "width":1280, "height":1280, "qualifier":"port-xxxhdpi" },
+        { "name":"splash_landscape_xxxhdpi", "width":1920, "height":1920, "qualifier":"land-xxxhdpi" }
+      ]
+    },
+    "windows":{
+      "path":"www/res/windows/splash",
+      "sizes":[
+        { "name":"splash",                      "width":480,  "height":800  },
+        { "name":"SplashScreen.scale-100",      "width":620,  "height":300  },
+        { "name":"SplashScreenPhone.scale-240", "width":1152, "height":1920 }
+      ]
+    }
+  }
+}
