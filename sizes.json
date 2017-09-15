@@ -80,9 +80,9 @@
     "windows":{
       "path":"resources/windows",
       "sizes":[
-        { "name":"Store", "width":300,  "height":300 },
-        { "name":"Store", "width":1080, "height":1080 },
-        { "name":"Store", "width":720,  "height":1080 }
+        { "name":"Store300x300",   "width":300,  "height":300 },
+        { "name":"Store1080x1080", "width":1080, "height":1080 },
+        { "name":"Store720x1080",  "width":720,  "height":1080 }
       ]
     }
   },
