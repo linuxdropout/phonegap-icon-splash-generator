@@ -1,6 +1,6 @@
 {
   "name": "phonegap-icon-splash-generator",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "generate phonegap icons for an ionic v1 cordova phonegap project",
   "main": "phonegap-icon-splash-generator.js",
   "scripts": {
