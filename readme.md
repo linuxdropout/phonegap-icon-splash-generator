@@ -16,13 +16,13 @@ cp node_modules/phonegap-icon-splash-generator/sizes.json .
 
 1. Put 'icon.png' in the root of the folder. This should be 1024x1024.
 2. Put 'splash.png' in the root of the folder. This should be 640x1136
-3. Run this command:
+3. Run below command.
+4. Copy and paste the contents of iconsplash.xml into your config.xml file.
 
 ```sh
 node phonegap-icon-splash-generator.js
 ```
 
-4. Copy and paste the contents of iconsplash.xml into your config.xml file.
 
 ## Planned Features
 
