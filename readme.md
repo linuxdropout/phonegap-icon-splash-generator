@@ -10,7 +10,7 @@ Auto generate splash screens and icons for a phongap ionic cordova 1.0 project f
 2. Put 'splash.png' in the root of the folder. This should be 640x1136
 3. Run these commands:
 
-```shell
+```sh
 npm install phonegap-icon-splash-generator
 cp node_modules/phonegap-icon-splash-generator/phonegap-icon-splash-generator.js .
 cp node_modules/phonegap-icon-splash-generator/sizes.json .
