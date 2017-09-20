@@ -22,4 +22,11 @@ cp node_modules/phonegap-icon-splash-generator/sizes.json .
 node phonegap-icon-splash-generator.js
 ```
 
+4. Copy and paste the contents of iconsplash.xml into your config.xml file.
+
+## Planned Features
+
+1. Support for landscape splash screens other than just creating one from the given icon.
+2. Option to provide background colour other than just white.
+
 *Author - Dylan Hanner*
