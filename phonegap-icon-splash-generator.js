@@ -1,6 +1,6 @@
 const gm          = require("gm").subClass({ imageMagick: true })
 const fs          = require("fs")
-const path        = process.argv[1].replace(/\\/,'/').replace("/phonegap-icon-splash-generator.js","")
+const path        = process.argv[1].replace(/\\/,'/').replace("/phonegap-icon-splash-generator.js","").replace("\\phonegap-icon-splash-generator.js","")
 
 var files = fs.readdirSync(path)
 var xml = ""
