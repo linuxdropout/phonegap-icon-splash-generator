@@ -111,12 +111,12 @@
         { "name":"splash_landscape_mdpi",    "width":480, "height":320,   "qualifier":"land-mdpi"    },
         { "name":"splash_portrait_hdpi",     "width":480, "height":800,   "qualifier":"port-hdpi"    },
         { "name":"splash_landscape_hdpi",    "width":800, "height":480,   "qualifier":"land-hdpi"    },
-        { "name":"splash_portrait_xhdpi",    "width":720, "height":1280,  "qualifier":"port-xhdpi"   },
-        { "name":"splash_landscape_xhdpi",   "width":1280, "height":720,  "qualifier":"land-xhdpi"   },
-        { "name":"splash_portrait_xxhdpi",   "width":960, "height":1600,  "qualifier":"port-xxhdpi"  },
-        { "name":"splash_landscape_xxhdpi",  "width":1600, "height":960,  "qualifier":"land-xxhdpi"  },
-        { "name":"splash_portrait_xxxhdpi",  "width":1280, "height":1280, "qualifier":"port-xxxhdpi" },
-        { "name":"splash_landscape_xxxhdpi", "width":1920, "height":1920, "qualifier":"land-xxxhdpi" }
+        { "name":"splash_portrait_xhdpi",    "width":1080, "height":1920,  "qualifier":"port-xhdpi"   },
+        { "name":"splash_landscape_xhdpi",   "width":1920, "height":1080,  "qualifier":"land-xhdpi"   },
+        { "name":"splash_portrait_xxhdpi",   "width":1440, "height":2880,  "qualifier":"port-xxhdpi"  },
+        { "name":"splash_landscape_xxhdpi",  "width":2880, "height":1440,  "qualifier":"land-xxhdpi"  },
+        { "name":"splash_portrait_xxxhdpi",  "width":2160, "height":3840, "qualifier":"port-xxxhdpi" },
+        { "name":"splash_landscape_xxxhdpi", "width":3840, "height":2160, "qualifier":"land-xxxhdpi" }
       ]
     },
     "windows":{

@@ -153,7 +153,7 @@ function createSplash( destination, size_data, platform ) {
   let dest = destination+"/"+size_data.name+".png"
   processing++
   switch ( platform ) {
-    case 'android' : xml += '<splash platform="'+platform+'" qualifier="'+size_data.qualifier+'" src="'+dest.replace('www/','')+'"></splash>\n'; break;
+    case 'android' : xml += '<splash platform="'+platform+'" qualifier="'+size_data.qualifier+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'"></splash>\n'; break;
     default        : xml += '<splash platform="'+platform+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'"></splash>\n';
   }
   let size = Math.floor(Math.min(size_data.width,size_data.height) * 0.8)
