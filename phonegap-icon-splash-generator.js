@@ -42,6 +42,7 @@ if ( files.includes("splash.png") ) {
   checkpath(info.splash.ios.path)
   checkpath(info.splash.android.path)
   checkpath(info.splash.windows.path)
+  resizeDefaultSplash()
   for (let i = 0; i < info.splash.ios.sizes.length; i++)     { resizeSplash(info.splash.ios.path,     info.splash.ios.sizes[i],     'ios')      }
   for (let i = 0; i < info.splash.android.sizes.length; i++) { resizeSplash(info.splash.android.path, info.splash.android.sizes[i], 'android')  }
   for (let i = 0; i < info.splash.windows.sizes.length; i++) { resizeSplash(info.splash.windows.path, info.splash.windows.sizes[i], 'winphone') }
@@ -87,6 +88,24 @@ function createDefaultSplash() {
     console.log(command)
     if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
   })
+}
+
+function resizeDefaultSplash() {
+  if ( size_data.width >= size_data.height ) {
+    createSplash( destination, size_data, platform )
+  } else {
+    let from = path+"/splash.png"
+    let dest = "www/splash.png"
+    processing++
+    xml += '<splash src="'+dest.replace('www/','')+'"></splash>\n'
+    gm( from )
+    .resize( size_data.width, size_data.height, "!" )
+    .gravity('Center')
+    .write( dest, function(err,data2,data2,command) {
+      console.log(command)
+      if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
+    })
+  }
 }
 
 function createIcon( destination, size_data, platform ) {
