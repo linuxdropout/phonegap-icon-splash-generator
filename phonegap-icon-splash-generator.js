@@ -2,55 +2,235 @@ const gm          = require("gm").subClass({ imageMagick: true })
 const fs          = require("fs")
 const path        = process.argv[1].replace(/\\/,'/').replace("/phonegap-icon-splash-generator.js","").replace("\\phonegap-icon-splash-generator.js","")
 
-var files = fs.readdirSync(path)
 var xml = ""
+var log = ""
+var images = {}
+var sorting = 0
 var processing = 0
+var sizes = JSON.parse(fs.readFileSync(path+"/sizes.json", "UTF-8"))
 
-if ( !files.includes("sizes.json") ) {
-  console.log("No sizes.json file found")
-  return;
-} else {
-  var info = JSON.parse(fs.readFileSync( path+"/sizes.json" ))
+function ImageProcessor( path, type, source ) {
+  const self = this
+
+  this.path     = path+"/resources/source/"+type+"/"+source
+  this.gm       = gm(this.path)
+  this.events   = {}
+  this.type     = type
+  this.source   = source
+  
+  this.gm.identify(function(nan, props) {
+    self.background = props['Background color']
+    self.format     = props.format
+    self.width      = props.size.width
+    self.height     = props.size.height
+    self.ratio      = self.width / self.height
+    self.gcd = gcd( self.width, self.height )
+    self.aspect_ratio = getAspectRatio( self.width, self.height )
+    self.resolution   = Number(props["Number pixels"].replace("K","000").replace("M","000000"))
+    self.trigger('init')
+  })
+
+  this.gm.quality(100)
+}
+ImageProcessor.prototype.trigger = function(type, params) {
+  if ( typeof this.events[type] == 'undefined' ) { return; }
+  for (var i = this.events[type].length - 1; i >= 0; i--) {
+    var event = this.events[type][i]
+    if ( event.callback.call(this, params) || event.temp ) { this.events[type].splice(i,1) }
+  }
+}
+ImageProcessor.prototype.on = function(type, callback, id) {
+  if ( typeof this.events[type] == 'undefined' ) { this.events[type] = [] }
+  this.events[type].push({ callback: callback, id: id })
+}
+ImageProcessor.prototype.once = function(type, callback, id) {
+  if ( typeof this.events[type] == 'undefined' ) { this.events[type] = [] }
+  this.events[type].push({ callback: callback, id: id, temp: true })
 }
 
-if ( files.includes("icon.png") ) {
-  checkpath(info.icon.ios.path)
-  checkpath(info.icon.android.path)
-  checkpath(info.icon.windows.path)
-  checkpath(info.store.ios.path)
-  checkpath(info.store.android.path)
-  checkpath(info.store.windows.path)
-  createDefaultIcon()
-  for (let i = 0; i < info.icon.ios.sizes.length;      i++) { createIcon(info.icon.ios.path,      info.icon.ios.sizes[i],      'ios')      }
-  for (let i = 0; i < info.icon.android.sizes.length;  i++) { createIcon(info.icon.android.path,  info.icon.android.sizes[i],  'android')  }
-  for (let i = 0; i < info.icon.windows.sizes.length;  i++) { createIcon(info.icon.windows.path,  info.icon.windows.sizes[i],  'winphone') }
-  for (let i = 0; i < info.store.ios.sizes.length;     i++) { createIcon(info.store.ios.path,     info.store.ios.sizes[i],     'ios')      }
-  for (let i = 0; i < info.store.android.sizes.length; i++) { createIcon(info.store.android.path, info.store.android.sizes[i], 'android')  }
-  for (let i = 0; i < info.store.windows.sizes.length; i++) { createIcon(info.store.windows.path, info.store.windows.sizes[i], 'winphone') }
-  if ( !files.includes("splash.png") ) {
-    checkpath(info.splash.ios.path)
-    checkpath(info.splash.android.path)
-    checkpath(info.splash.windows.path)
-    createDefaultSplash()
-    for (let i = 0; i < info.splash.ios.sizes.length; i++)     { createSplash(info.splash.ios.path,     info.splash.ios.sizes[i],     'ios')      }
-    for (let i = 0; i < info.splash.android.sizes.length; i++) { createSplash(info.splash.android.path, info.splash.android.sizes[i], 'android')  }
-    for (let i = 0; i < info.splash.windows.sizes.length; i++) { createSplash(info.splash.windows.path, info.splash.windows.sizes[i], 'winphone') }
+function gcd(a,b) {
+  if ( b == 0 ) { return a }
+  return gcd( b, a % b )
+}
+function getAspectRatio(width, height) {
+  var r = gcd(width, height)
+  return (width/r).toString() + ":" + (height/r).toString()
+}
+
+var types = fs.readdirSync(path+"/resources/source")
+for ( var type of types ) {
+  var sources = fs.readdirSync(path+"/resources/source/"+type)
+  for ( var source of sources ) {
+    sorting++
+    console.log("Found source", type, source)
+    var ip = new ImageProcessor( path, type, source )
+    ip.once('init', function(_type){
+      return function() {
+        sortImages(this, _type)
+        if ( --sorting == 0 ) {  processImages(images) }
+      }
+    }(type))
   }
 }
 
-if ( files.includes("splash.png") ) {
-  checkpath(info.splash.ios.path)
-  checkpath(info.splash.android.path)
-  checkpath(info.splash.windows.path)
-  resizeDefaultSplash()
-  for (let i = 0; i < info.splash.ios.sizes.length; i++)     { resizeSplash(info.splash.ios.path,     info.splash.ios.sizes[i],     'ios')      }
-  for (let i = 0; i < info.splash.android.sizes.length; i++) { resizeSplash(info.splash.android.path, info.splash.android.sizes[i], 'android')  }
-  for (let i = 0; i < info.splash.windows.sizes.length; i++) { resizeSplash(info.splash.windows.path, info.splash.windows.sizes[i], 'winphone') }
+function sortImages( image_processor, type ) {
+  if ( typeof images[type] == "undefined" ) { images[type] = [] }
+  for (var i = images[type].length - 1; i >= 0; i--) {
+    if (images[type][i].aspect_ratio === image_processor.aspect_ratio) {
+      if ( image_processor.resolution > images[type][i].resolution ) {
+        console.log("Discarding",images[type][i].type,images[type][i].width+"x"+images[type][i].height,"for higher res image")
+        images[type].splice(i, 1)
+        break;
+      } else {
+        return;
+      }
+    }
+  }
+  console.log("Using",image_processor.type,image_processor.width+"x"+image_processor.height)
+  images[type].push(image_processor)
 }
 
-function checkpath(dirpath) {
-  let path_parts = dirpath.split('/')
-  let current_path = path
+function processImages(images) {
+  for ( var type in sizes ) {
+    for ( var platform in sizes[type] ) {
+      for ( var size of sizes[type][platform].sizes ) {
+        if ( typeof images[type] != "undefined" ) {
+          var ar = getAspectRatio( size.width, size.height )
+          var found = false
+          for ( var image of images[type] ) {
+            if ( image.aspect_ratio == ar ) {
+              found = true
+              processImage( size, sizes[type][platform].path, image, type, platform )
+              break;
+            }
+          }
+          if ( !found ) {
+            console.log("WARN: Missing "+type+" "+size.width+"x"+size.height+" ("+ar+") for "+platform+" "+size.name)
+            if ( true ) {
+              var image = getBestFitProcessor( images[type], size.width, size.height, type )
+              if ( !image ) {
+                console.log("ERR: No appropriate images found")
+              } else {
+                console.log("Using best fit", image.width+"x"+image.height, "for", size.width, size.height)
+                switch ( type ) {
+                  case "icon" :
+                  case "store": extendImage( size, sizes[type][platform].path, image, type, platform ); break;
+                  default     : cutImage( size, sizes[type][platform].path, image, type, platform );    break;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function processImage( size, path, image, type, platform ) {
+  checkPath(path)
+  var dest = path+"/"+size.name+".png"
+  processing++
+  switch ( type ) {
+    case 'icon':
+    case 'splash':
+      switch ( platform ) {
+        case "windows": xml += '<'+type+' platform="winphone" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n'; break;
+        case "android": xml += '<'+type+' platform="android" qualifier="'+size.qualifier+'" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n'; break;
+        default       : xml += '<'+type+' platform="'+platform+'" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n';
+      }
+    break;
+  }
+  gm(image.path)
+    .quality(100)
+    .gravity('Center')
+    .scale(size.width, size.height)
+    .write( dest, function(err,data2,data2,command) {
+      console.log("Image created", dest, "("+size.width+"x"+size.height+")")
+      log+=command+"\n"
+      if ( err ) { log+=err+"\n" }
+      if ( --processing == 0 ) {
+        fs.writeFileSync("iconsplash.xml",xml)
+        fs.writeFileSync("iconsplash.log",log)
+      }
+    })
+}
+function extendImage( size, path, image, type, platform ) {
+  checkPath(path)
+  var dest = path+"/"+size.name+".png"
+  var icon = {
+    width : image.width,
+    height: image.height
+  }
+  if ( icon.width > size.width ) {
+    var r = size.width/icon.width
+    icon.width = Math.floor(icon.width*r)
+    icon.height = Math.floor(icon.height*r)
+  }
+  if ( icon.height > size.height ) {
+    var r = size.height/icon.height
+    icon.width = Math.floor(icon.width*r)
+    icon.height = Math.floor(icon.height*r)
+  }
+  processing++
+  switch ( type ) {
+    case 'icon':
+    case 'splash':
+      switch ( platform ) {
+        case "windows": xml += '<'+type+' platform="winphone" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n'; break;
+        case "android": xml += '<'+type+' platform="android" qualifier="'+size.qualifier+'" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n'; break;
+        default       : xml += '<'+type+' platform="'+platform+'" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n';
+      }
+    break;
+  }
+  gm(image.path)
+    .resize( icon.width, icon.height )
+    .gravity("Center")
+    .alpha('remove')
+    .background(image.background)
+    .extent( size.width, size.height )
+    .write( dest, function(err,data2,data2,command) {
+      console.log("Image created", dest, "("+size.width+"x"+size.height+")")
+      log+=command+"\n"
+      if ( err ) { log+=err+"\n" }
+      if ( --processing == 0 ) {
+        fs.writeFileSync("iconsplash.xml",xml)
+        fs.writeFileSync("iconsplash.log",log)
+      }
+    })
+}
+
+function cutImage( size, path, image, type, platform ) {
+  checkPath(path)
+  var dest = path+"/"+size.name+".png"
+  processing++
+  switch ( type ) {
+    case 'icon':
+    case 'splash':
+      switch ( platform ) {
+        case "windows": xml += '<'+type+' platform="winphone" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n'; break;
+        case "android": xml += '<'+type+' platform="android" qualifier="'+size.qualifier+'" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n'; break;
+        default       : xml += '<'+type+' platform="'+platform+'" width="'+size.width+'" height="'+size.height+'" src="'+dest.replace("www/","")+'"></'+type+'>\n';
+      }
+    break;
+  }
+  gm(image.path)
+    .crop( size.width, size.height, (image.width-size.width)/2, (image.height-size.height)/2 )
+    .gravity("Center")
+    .alpha('remove')
+    .write( dest, function(err,data2,data2,command) {
+      console.log("Image created", dest, "("+size.width+"x"+size.height+")")
+      log+=command+"\n"
+      if ( err ) { log+=err+"\n" }
+      if ( --processing == 0 ) {
+        fs.writeFileSync("iconsplash.xml",xml)
+        fs.writeFileSync("iconsplash.log",log)
+      }
+    })
+}
+
+function checkPath(dirpath) {
+  var path_parts = dirpath.split('/')
+  var current_path = path
   for ( var i = 0; i < path_parts.length; i++ ) {
     current_path += "/"+path_parts[i]
     if ( !fs.existsSync( current_path ) ) {
@@ -59,127 +239,20 @@ function checkpath(dirpath) {
   }
 }
 
-function createDefaultIcon() {
-  let from = path+"/icon.png"
-  let dest = "www/icon.png"
-  processing++
-  xml += '<icon src="'+dest.replace('www/','')+'"></icon>\n'
-  gm( from )
-  .resize( 1024, 1024, "!" )
-  .alpha('remove')
-  .write( dest, function(err,data2,data2,command) {
-    console.log(command)
-    if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
-  })
-}
-
-function createDefaultSplash() {
-  let from = path+"/icon.png"
-  let dest = "www/splash.png"
-  processing++
-  xml += '<splash src="'+dest.replace('www/','')+'"></splash>\n'
-  let size = Math.floor(Math.min(512,1024) * 0.8)
-  gm( from )
-  .resize( size, size, "!" )
-  .gravity('Center')
-  .background('#ffffff')
-  .extent( 512, 1024 )
-  .write( dest, function(err,data2,data2,command) {
-    console.log(command)
-    if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
-  })
-}
-
-function resizeDefaultSplash() {
-  let from = path+"/splash.png"
-  let dest = "www/splash.png"
-  processing++
-  xml += '<splash src="'+dest.replace('www/','')+'"></splash>\n'
-  gm( from )
-  .resize( 640, 1136, "!" )
-  .gravity('Center')
-  .write( dest, function(err,data2,data2,command) {
-    console.log(command)
-    if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
-  })
-}
-
-function createIcon( destination, size_data, platform ) {
-  let from = path+"/icon.png"
-  let dest = destination+"/"+size_data.name+".png"
-  processing++
-  switch ( platform ) {
-    case 'android':
-      if ( size_data.qualifier != undefined ) {
-        xml += '<icon platform="android" qualifier="'+size_data.qualifier+'" src="'+dest.replace('www/','')+'"></icon>\n';
-        break;
+function getBestFitProcessor(images, width, height) {
+  if ( images == undefined ) { return }
+  var ratio_diff = 1000
+  var index = -1
+  var scl = width/height
+  for (var i = 0; i < images.length; i++) {
+    var img = images[i]
+    if ( img.type == "icon" || img.type == "store" || (img.width > width && img.height > height) ) {
+      var diff = Math.abs(scl-img.ratio)
+      if ( diff < ratio_diff ) {
+        ratio_diff = diff
+        index = i
       }
-    default: xml += '<icon platform="'+platform+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'"></icon>\n'; break;
-  }
-  if ( size_data.width != size_data.height ) {
-    let size = Math.floor(Math.min(size_data.width,size_data.height) * 0.8)
-    gm( from )
-    .alpha('remove')
-    .flatten()
-    .background('#ffffff')
-    .resize( size, size, "!" )
-    .gravity('Center')
-    .extent( size_data.width, size_data.height )
-    .write( dest, function(err,data2,data2,command) {
-      console.log(command)
-      if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
-    })
-  } else {
-    gm( from )
-    .alpha('remove')
-    .flatten()
-    .background('#ffffff')
-    .resize( size_data.width, size_data.height, "!" )
-    .write( dest, function(err,data2,data2,command) {
-      console.log(command)
-      if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
-    })
-  }
-}
-
-function resizeSplash( destination, size_data, platform ) {
-  if ( size_data.width >= size_data.height ) {
-    createSplash( destination, size_data, platform )
-  } else {
-    let dest = destination+"/"+size_data.name+".png"
-    let from = path+"/splash.png"
-    processing++
-    switch ( platform ) {
-      case 'android' : xml += '<splash platform="'+platform+'" qualifier="'+size_data.qualifier+'" src="'+dest.replace('www/','')+'"></splash>\n'; break;
-      default        : xml += '<splash platform="'+platform+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'"></splash>\n';
     }
-    gm( from )
-    .resize( size_data.width, size_data.height, "!" )
-    .gravity('Center')
-    .write( dest, function(err,data2,data2,command) {
-      console.log(command)
-      if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
-    })
   }
-}
-
-function createSplash( destination, size_data, platform ) {
-  let from = path+"/icon.png"
-  let dest = destination+"/"+size_data.name+".png"
-  processing++
-  switch ( platform ) {
-    case 'android' : xml += '<splash platform="'+platform+'" qualifier="'+size_data.qualifier+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'"></splash>\n'; break;
-    default        : xml += '<splash platform="'+platform+'" width="'+size_data.width+'" height="'+size_data.height+'" src="'+dest.replace('www/','')+'"></splash>\n';
-  }
-  let size = Math.floor(Math.min(size_data.width,size_data.height) * 0.8)
-  gm( from )
-  .resize( size, size, "!" )
-  .gravity('Center')
-  .alpha('remove')
-  .background('#ffffff')
-  .extent( size_data.width, size_data.height )
-  .write( dest, function(err,data2,data2,command) {
-    console.log(command)
-    if ( --processing == 0 ) { fs.writeFileSync( path+"/iconsplash.xml", xml, "UTF-8" ) }
-  })
+  if ( index != -1 ) { return images[index] }
 }

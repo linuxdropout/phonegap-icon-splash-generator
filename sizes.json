@@ -46,20 +46,16 @@
     "windows":{
       "path":"www/res/windows/icons",
       "sizes":[
-        { "name":"Square30x30Logo.scale-100",    "width":30,  "height":30  },
-        { "name":"Square44x44Logo.scale-100",    "width":44,  "height":44  },
-        { "name":"Square44x44Logo.scale-240",    "width":106, "height":106 },
-        { "name":"Square70x70Logo.scale-100",    "width":70,  "height":70  },
-        { "name":"Square71x71Logo.scale-100",    "width":71,  "height":71  },
-        { "name":"Square71x71Logo.scale-240",    "width":170, "height":170 },
-        { "name":"Square150x150Logo.scale-100",  "width":150, "height":150 },
-        { "name":"Square300x300Logo.scale-100",  "width":300, "height":300 },
-        { "name":"Square150x150Logo.scale-240",  "width":360, "height":360 },
-        { "name":"Square310x310Logo.scale-100",  "width":310, "height":310 },
-        { "name":"Wide310x150Logo.scale-100",    "width":310, "height":150 },
-        { "name":"Wide310x150Logo.scale-240",    "width":744, "height":360 },
-        { "name":"StoreLogo50x50Logo.scale-100", "width":50,  "height":50  },
-        { "name":"StoreLogo50x50Logo.scale-240", "width":120, "height":120 }
+        { "name":"Square30x30Logo",    "width":30,  "height":30  },
+        { "name":"Square44x44Logo",    "width":44,  "height":44  },
+        { "name":"Square50x50Logo",    "width":50,  "height":50  },
+        { "name":"Square70x70Logo",    "width":70,  "height":70  },
+        { "name":"Square71x71Logo",    "width":71,  "height":71  },
+        { "name":"Square150x150Logo",  "width":150, "height":150 },
+        { "name":"Square300x300Logo",  "width":300, "height":300 },
+        { "name":"Square310x310Logo",  "width":310, "height":310 },
+        { "name":"Wide310x150Logo",    "width":310, "height":150 },
+        { "name":"StoreLogo50x50Logo", "width":50,  "height":50  }
       ]
     }
   },
@@ -122,9 +118,8 @@
     "windows":{
       "path":"www/res/windows/splash",
       "sizes":[
-        { "name":"splash",                      "width":480,  "height":800  },
-        { "name":"SplashScreen.scale-100",      "width":620,  "height":300  },
-        { "name":"SplashScreenPhone.scale-240", "width":1152, "height":1920 }
+        { "name":"splash",            "width":480,  "height":800   },
+        { "name":"SplashScreenPhone", "width":1152, "height":1920  }
       ]
     }
   }
