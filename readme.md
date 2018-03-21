@@ -29,8 +29,8 @@ node phonegap-icon-splash-generator.js
 
 ## Planned Features
 
-1. Support for landscape splash screens other than just creating one from the given icon.
-2. Option to provide background colour other than just white.
+~~1. Support for landscape splash screens other than just creating one from the given icon.~~ v2 (as many as you want can be given)
+~~2. Option to provide background colour other than just white.~~ v2 (now uses image background if present)
 
 *Author - Dylan Hanner*
 

@@ -106,17 +106,15 @@ function processImages(images) {
           }
           if ( !found ) {
             console.log("WARN: Missing "+type+" "+size.width+"x"+size.height+" ("+ar+") for "+platform+" "+size.name)
-            if ( true ) {
-              var image = getBestFitProcessor( images[type], size.width, size.height, type )
-              if ( !image ) {
-                console.log("ERR: No appropriate images found")
-              } else {
-                console.log("Using best fit", image.width+"x"+image.height, "for", size.width, size.height)
-                switch ( type ) {
-                  case "icon" :
-                  case "store": extendImage( size, sizes[type][platform].path, image, type, platform ); break;
-                  default     : cutImage( size, sizes[type][platform].path, image, type, platform );    break;
-                }
+            var image = getBestFitProcessor( images[type], size.width, size.height, type )
+            if ( !image ) {
+              console.log("ERR: No appropriate images found")
+            } else {
+              console.log("Using best fit", image.width+"x"+image.height, "for", size.width, size.height)
+              switch ( type ) {
+                case "icon" :
+                case "store": extendImage( size, sizes[type][platform].path, image, type, platform ); break;
+                default     : cutImage( size, sizes[type][platform].path, image, type, platform );    break;
               }
             }
           }
